@@ -1,0 +1,77 @@
+﻿@using StockTrackingCase.Entities.Models
+
+@model List<Stock>
+@{
+    ViewData["Title"] = "Home Page";
+    int index = 0;
+}
+
+@if (TempData["Error"] is not null)
+{
+    <h3 class="alert alert-danger">@TempData["Error"]</h3>
+}
+
+
+<div class="form-group">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Stok Türü Ekle</button>
+</div>
+
+<div class="form-group mt-2">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Stok Türü</th>
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                index++;
+                <tr>
+                    <td>@index</td>
+                    <td>@item.Type</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="text-success">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Pasif</span>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info">Güncelle</button>
+                        <a class="btn btn-sm btn-danger ms-1" asp-controller="Home" asp-action="RemoveById" asp-route-id="@item.Id">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Ürün Türü Ekle</h1>
+                <button type="button" class="btn-close" id="addModalCloseBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Home" asp-action="Add" method="post" autocomplete="off">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Stok Türü</label>
+                        <input class="form-control" name="type" required minLenght="3" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

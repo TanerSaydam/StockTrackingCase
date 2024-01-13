@@ -1,0 +1,13 @@
+﻿using StockTrackingCase.DataAccess.Context;
+using StockTrackingCase.Entities.Models;
+using StockTrackingCase.Entities.Repositories;
+
+namespace StockTrackingCase.DataAccess.Repositories;
+
+public sealed class StockUnitRepository : Repository<StockUnit>, IStockUnitRepository
+{
+    public StockUnitRepository(ApplicationDbContext context) : base(context)
+    {
+    }
+}
+
