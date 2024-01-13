@@ -7,7 +7,7 @@ namespace StockTrackingCase.MVC.Controllers;
 public class HomeController(IStockService stockService) : Controller
 {
     public IActionResult Index()
-    {
+    {        
         List<Stock>? stock = stockService.GetAll().Data;
         return View(stock);
     }
@@ -29,7 +29,7 @@ public class HomeController(IStockService stockService) : Controller
     [HttpGet]
     public IActionResult RemoveById(Guid id)
     {
-        var response = stockService.Remove(id);
+        var response = stockService.RemoveById(id);
 
         if (!response.IsSuccess)
         {

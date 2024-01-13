@@ -35,7 +35,7 @@ public sealed class StockService(
         return new(stockRepository.GetAll().OrderBy(p=> p.Type).ToList());
     }
 
-    public Response<Stock> Remove(Guid id)
+    public Response<Stock> RemoveById(Guid id)
     {
         Stock? stock = stockRepository.GetByExpession(p => p.Id == id);
         if (stock is null)

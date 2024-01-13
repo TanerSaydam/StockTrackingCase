@@ -1,0 +1,157 @@
+﻿@using StockTrackingCase.Entities.DTOs
+@model StockUnitIndexDto
+@{
+    int index = 0;
+}
+
+
+@if (TempData["Error"] is not null)
+{
+    <h3 class="alert alert-danger">@TempData["Error"]</h3>
+}
+
+
+<div class="form-group">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Stok Birimi Ekle</button>
+</div>
+
+<div class="form-group mt-2">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Birim Kodu</th>
+                <th>Stok Türü</th>
+                <th>Tür</th>
+                <th>Açıklama</th>
+                <th>Alış Fiyatı</th>                
+                <th>Satış Fiyatı</th>
+                <th>Kağıt Ağırlığı</th>                
+                <th>Durum</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StockUnits)
+            {
+                index++;
+                <tr>
+                    <td>@index</td>
+                    <td>@item.UnitCode</td>
+                    <td>@item.Stock!.Type</td>
+                    <td>@item.Type</td>
+                    <td>@item.Description</td>
+                    <td class="text-success">@item.PurchasePrice.ToString("#,##0.00") @item.PurchasePriceCurrency</td>
+                    <td class="text-warning">@item.SellingPrice.ToString("#,##0.00") @item.SellingPriceCurrency</td>
+                    <td>@item.PaperWeight</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="text-success">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Pasif</span>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info">Güncelle</button>
+                        <a class="btn btn-sm btn-danger ms-1" asp-controller="StockUnits" asp-action="RemoveById" asp-route-id="@item.Id">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Stok Birimi Ekle</h1>
+                <button type="button" class="btn-close" id="addModalCloseBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="StockUnits" asp-action="Add" method="post" autocomplete="off">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Stok Birim Kodu</label>
+                        <input class="form-control" name="unitCode" required minLenght="3" />
+                    </div>
+                    <div class="form-group mt-1">
+                        <label>Stok Türü</label>
+                        <select class="form-control" name="stockId" required>
+                            <option value="">Seçim Yapınız...</option>
+                            @foreach (var item in Model.Stocks)
+                            {
+                                <option value="@item.Id">@item.Type</option>
+                            }                            
+                        </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Miktar Birimi</label>
+                        <select class="form-control" name="type" required>
+                            <option value="">Seçim Yapınız...</option>
+                            <option>Adet</option>
+                            <option>Gram</option>
+                            <option>m3</option>
+                            <option>m2</option>                            
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Açıklama</label>
+                        <input class="form-control" name="description"/>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-9">
+                            <div class="form-group">
+                                <label>Alış Fiyatı</label>
+                                <input type="number" class="form-control" name="purchasePrice" value="0" required min="0" />
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label>Para Birimi</label>
+                                <select class="form-control" name="purchasePriceCurrency" required>
+                                    <option selected>₺</option>
+                                    <option>$</option>
+                                    <option>€</option>                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-9">
+                            <div class="form-group">
+                                <label>Satış Fiyatı</label>
+                                <input type="number" class="form-control" name="sellingPrice" value="0" required min="0" />
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label>Para Birimi</label>
+                                <select class="form-control" name="sellingPriceCurrency" required>
+                                    <option selected>₺</option>
+                                    <option>$</option>
+                                    <option>€</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Kağıt Ağırlığı</label>
+                        <input class="form-control" name="paperWeight" />
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

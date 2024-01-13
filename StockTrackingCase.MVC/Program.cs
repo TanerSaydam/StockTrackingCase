@@ -12,11 +12,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
+#region Dependency Injection
 builder.Services.AddScoped<IUnitOfWork>(srv => srv.GetRequiredService<ApplicationDbContext>());
 
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<IStockUnitRepository, StockUnitRepository>();
 builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<IStockUnitService, StokUnitService>();
+#endregion
+
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

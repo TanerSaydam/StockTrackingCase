@@ -18,9 +18,9 @@ public sealed class StockUnit
     public string Type { get; set; } = string.Empty;
     public string? Description { get; set; }
     public decimal PurchasePrice { get; set; }
-    public string PurchasePriceType { get; set; } = string.Empty;
+    public string PurchasePriceCurrency { get; set; } = string.Empty;
     public decimal SellingPrice { get; set; }
-    public string SellingPriceType { get; set; } = string.Empty;
+    public string SellingPriceCurrency { get; set; } = string.Empty;
     public int? PaperWeight { get; set; }
     public bool IsActive { get; set; } = true;
 
